@@ -1,0 +1,24 @@
+---
+title: "Practice 2.2"
+author: "rpp"
+date: "2023-09-19"
+output: html_document
+---
+
+library (tidyr)
+library (dplyr)
+
+rairuoho<-read.table('D:/R for class/rairuoho.txt', 
+header=T, sep='\t', dec='.', na.strings = "n/a") 
+
+rairuoho$row<-NULL
+rairuoho$column<-NULL
+
+rairuoho$treatment<-ifelse(rairuoho$treatment=='nutrient', 'enriched','water')
+
+rairuoho_long <- rairuoho %>% pivot_longer(day3:day8,
+                                           names_to = ("day"),
+                                           values_to = "length")
+
+#rairuoho_rename <-rename(rairuoho_long,c(day=name, lenghth=value))
+finally <- rairuoho_rename %>% unite(upper_left, spatial1, spatial2, sep = " ")
