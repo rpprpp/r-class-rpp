@@ -364,10 +364,10 @@ sep=‘, dec=’.’, na.strings = “n/a”)</p>
 rairuoho\)</span>column&lt;-NULL</p>
 <p>rairuoho<span class="math inline">\(treatment&lt;-ifelse(rairuoho\)</span>treatment==‘nutrient’,
 ‘enriched’,‘water’)</p>
-<p>rairuoho_long &lt;- rairuoho %&gt;% pivot_longer(day3:day8, names_to
-= (“day”), values_to = “length”)</p>
+<p>rairuoho_long &lt;- rairuoho%&gt;% pivot_longer(day3:day8, names_to =
+(“day”), values_to = “length”)</p>
 <p>#rairuoho_rename &lt;-rename(rairuoho_long,c(day=name,
-lenghth=value)) finally &lt;- rairuoho_rename %&gt;% unite(upper_left,
+lenghth=value)) finally &lt;- rairuoho_long %&gt;% unite(upper_left,
 spatial1, spatial2, sep = ” “)</p>
 
 
