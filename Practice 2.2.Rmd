@@ -4,6 +4,7 @@ author: "rpp"
 date: "2023-09-19"
 output: html_document
 ---
+<<<<<<< HEAD
 ```{r}
 library (tidyr)
 library (dplyr)
@@ -14,25 +15,23 @@ library (dplyr)
 # read data set from url
 rairuoho<-read.table("https://www.dipintothereef.com/uploads/3/7/3/5/37359245/rairuoho.txt",header=T, sep="\t", dec='.') 
 
-
-#Remove variables "row" and "column" 
+#Remove variables "row" and "column"
 rairuoho$row<-NULL
 rairuoho$column<-NULL
 
 #change "nutrient" to "enriched" 
 rairuoho$treatment<-ifelse(rairuoho$treatment=='nutrient', 'enriched','water')
 
-#Reformat the table so that "day" and Create another variable, "length," to store the values
+
+#Create another variable, "length,", make "day" becomes a single variable 
 rairuoho_long <- rairuoho%>% pivot_longer(day3:day8,
                                            names_to = ("day"),
                                            values_to = "length")
 
 #rairuoho_rename <-rename(rairuoho_long,c(day=name, lenghth=value))
 
-#Merge variables "Spatial1" and "Spatial2" to create a new variable, "upper_left
+#Merge variables "Spatial1" and "Spatial2" to create a new variable, "upper_left" 
 finally <- rairuoho_long %>% unite(upper_left, spatial1, spatial2, sep = " ")
-
-
 
 
 # Display the dataset

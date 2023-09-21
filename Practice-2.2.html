@@ -357,6 +357,7 @@ display: none;
 </div>
 
 
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
 <pre class="r"><code>library (tidyr)
 library (dplyr)</code></pre>
 <pre><code>## 
@@ -373,25 +374,23 @@ library (dplyr)</code></pre>
 # read data set from url
 rairuoho&lt;-read.table(&quot;https://www.dipintothereef.com/uploads/3/7/3/5/37359245/rairuoho.txt&quot;,header=T, sep=&quot;\t&quot;, dec=&#39;.&#39;) 
 
-
-#Remove variables &quot;row&quot; and &quot;column&quot; 
+#Remove variables &quot;row&quot; and &quot;column&quot;
 rairuoho$row&lt;-NULL
 rairuoho$column&lt;-NULL
 
 #change &quot;nutrient&quot; to &quot;enriched&quot; 
 rairuoho$treatment&lt;-ifelse(rairuoho$treatment==&#39;nutrient&#39;, &#39;enriched&#39;,&#39;water&#39;)
 
-#Reformat the table so that &quot;day&quot; and Create another variable, &quot;length,&quot; to store the values
+
+#Create another variable, &quot;length,&quot;, make &quot;day&quot; becomes a single variable 
 rairuoho_long &lt;- rairuoho%&gt;% pivot_longer(day3:day8,
                                            names_to = (&quot;day&quot;),
                                            values_to = &quot;length&quot;)
 
 #rairuoho_rename &lt;-rename(rairuoho_long,c(day=name, lenghth=value))
 
-#Merge variables &quot;Spatial1&quot; and &quot;Spatial2&quot; to create a new variable, &quot;upper_left
+#Merge variables &quot;Spatial1&quot; and &quot;Spatial2&quot; to create a new variable, &quot;upper_left&quot; 
 finally &lt;- rairuoho_long %&gt;% unite(upper_left, spatial1, spatial2, sep = &quot; &quot;)
-
-
 
 
 # Display the dataset
