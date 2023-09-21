@@ -5,11 +5,15 @@ date: "2023-09-19"
 output: html_document
 ---
 
+You can add some text to describe what you did. Don't forget to insert your R code in a code chunk. When you generate your HTML, it will run your code.
+Use URL to import your data. 
+
+
+```{r,  eval=T}
 library (tidyr)
 library (dplyr)
 
-rairuoho<-read.table('D:/R for class/rairuoho.txt', 
-header=T, sep='\t', dec='.', na.strings = "n/a") 
+rairuoho<-read.table('D:/R for class/rairuoho.txt', header=T, sep='\t', dec='.', na.strings = "n/a") # use the URL here 
 
 rairuoho$row<-NULL
 rairuoho$column<-NULL
@@ -22,3 +26,5 @@ rairuoho_long <- rairuoho %>% pivot_longer(day3:day8,
 
 #rairuoho_rename <-rename(rairuoho_long,c(day=name, lenghth=value))
 finally <- rairuoho_rename %>% unite(upper_left, spatial1, spatial2, sep = " ")
+finally
+```
