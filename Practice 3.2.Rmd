@@ -9,8 +9,16 @@ Good, just the 1st table should be made in R and NOT imported as a txt file
 
 ```{r, warning = F, message = F}
 #first element(data frame)
-DIET<-read.table('D:/R for class/diet.txt',
-                 header=T, sep='\t', dec='.') # do not use a .txt file here I want you to make the table directly in R
+#DIET<-read.table('D:/R for class/diet.txt',
+                 #header=T, sep='\t', dec='.') # do not use a .txt file here I want you to make the table directly in R
+
+#make the table directly in R
+before_diet <- c(104,95,87,77,112)
+after_diet<- c(96,91,81,75,118)
+DIET <- data.frame(before_diet, after_diet)
+
+## Display data.frame 
+DIET
 
 #second element(WEIGHT_LOSS)
 

@@ -357,11 +357,26 @@ display: none;
 </div>
 
 
+<p>Good, just the 1st table should be made in R and NOT imported as a
+txt file</p>
 <pre class="r"><code>#first element(data frame)
-DIET&lt;-read.table(&#39;D:/R for class/diet.txt&#39;,
-                 header=T, sep=&#39;\t&#39;, dec=&#39;.&#39;)
+#DIET&lt;-read.table(&#39;D:/R for class/diet.txt&#39;,
+                 #header=T, sep=&#39;\t&#39;, dec=&#39;.&#39;) # do not use a .txt file here I want you to make the table directly in R
 
-#second element(WEIGHT_LOSS)
+#make the table directly in R
+before_diet &lt;- c(104,95,87,77,112)
+after_diet&lt;- c(96,91,81,75,118)
+DIET &lt;- data.frame(before_diet, after_diet)
+
+## Display data.frame 
+DIET</code></pre>
+<pre><code>##   before_diet after_diet
+## 1         104         96
+## 2          95         91
+## 3          87         81
+## 4          77         75
+## 5         112        118</code></pre>
+<pre class="r"><code>#second element(WEIGHT_LOSS)
 
 ###vector of character
 vector &lt;- c(&quot;before_diet&quot;, &quot;after_diet&quot;)
@@ -403,15 +418,15 @@ WEIGHT_LOSS</code></pre>
 ## 4       4    97.40260
 ## 5       5   105.35714</code></pre>
 <pre class="r"><code>#third element(message)
-message&lt;- c(&quot;What doesn&#39;t kill me makes me stronger.&quot;)
+message&lt;- c(&quot;What doesn&#39;t kill me makes me stronger.&quot;) # so that you can make the table in R :)
 
 #finally the list BUBBLE_DIET
 BUBBLE_DIET&lt;- list(DIET, WEIGHT_LOSS, message )
 str(BUBBLE_DIET)</code></pre>
 <pre><code>## List of 3
 ##  $ :&#39;data.frame&#39;:    5 obs. of  3 variables:
-##   ..$ before_diet: int [1:5] 104 95 87 77 112
-##   ..$ after_diet : int [1:5] 96 91 81 75 118
+##   ..$ before_diet: num [1:5] 104 95 87 77 112
+##   ..$ after_diet : num [1:5] 96 91 81 75 118
 ##   ..$ percentage : num [1:5] 92.3 95.8 93.1 97.4 105.4
 ##  $ :List of 3
 ##   ..$ : chr [1:2] &quot;before_diet&quot; &quot;after_diet&quot;
