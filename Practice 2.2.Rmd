@@ -8,6 +8,7 @@ output: html_document
 ```{r}
 library (tidyr)
 library (dplyr)
+##testing
 
 #rairuoho<-read.table('D:/R for class/rairuoho.txt', 
 #header=T, sep='\t', dec='.', na.strings = "n/a") 
