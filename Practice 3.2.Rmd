@@ -5,10 +5,12 @@ date: "2023-09-26"
 output: html_document
 ---
 
-```{r}
+Good, just the 1st table should be made in R and NOT imported as a txt file
+
+```{r, warning = F, message = F}
 #first element(data frame)
 DIET<-read.table('D:/R for class/diet.txt',
-                 header=T, sep='\t', dec='.')
+                 header=T, sep='\t', dec='.') # do not use a .txt file here I want you to make the table directly in R
 
 #second element(WEIGHT_LOSS)
 
@@ -31,7 +33,7 @@ str(WEIGHT_LOSS)
 WEIGHT_LOSS
 
 #third element(message)
-message<- c("What doesn't kill me makes me stronger.")
+message<- c("What doesn't kill me makes me stronger.") # so that you can make the table in R :)
 
 #finally the list BUBBLE_DIET
 BUBBLE_DIET<- list(DIET, WEIGHT_LOSS, message )
@@ -39,3 +41,5 @@ str(BUBBLE_DIET)
 
 ## Display the list
 BUBBLE_DIET
+```
+
