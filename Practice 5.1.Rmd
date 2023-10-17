@@ -1,0 +1,26 @@
+---
+title: "Practice 5.1"
+author: "rpp"
+date: "2023-10-17"
+output: html_document
+---
+
+```{r  warning=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+library(rgdal)
+library(leaflet)
+
+taiwan <- readOGR('Data/COUNTY_MOI_1090820.shp', use_iconv=F, encoding='UTF-8')
+
+custom_label <- htmltools::tags$div(
+  style = "position=fixed; top=10; right=10; 
+  background-color: white","Experiment Location")
+
+leaflet(taiwan,) %>%
+  addPolygons(weight=0) %>%
+  addMarkers(
+    lng = c(121.55366636474005, 121.54389126730858, 121.53663439410937, 121.527973284159),
+    lat = c(25.01674026623676, 25.01987822525006, 25.03032128992012, 25.04595871511418))%>%
+  addProviderTiles("Stadia.AlidadeSmooth")%>%
+  addControl(custom_label, position = "topright")
