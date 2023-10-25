@@ -1,0 +1,71 @@
+---
+title: "Practice 6.2"
+author: "rpp"
+date: "2023-10-25"
+output: html_document
+---
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(animation)
+library(ggplot2)
+library (gganimate)
+
+
+growhw <- function(growth.rate, plot_N1 = FALSE, plot_N2 = FALSE) {
+  num_gen <- 30
+  N1 <- rep(0, num_gen)
+  N2 <- rep(0, num_gen)
+  generation <- 1:num_gen
+  N1[1] <- 5
+  N2[1] <- 5
+  K1 <- 220
+  K2 <- 200
+  a12 <- 1.5
+  a21 <- 1.5
+  
+  for (i in 2:num_gen) {
+   # N[i]  = N[i-1]+ (growth.rate*N[i-1]*((100-N[i-1])/100))
+    N1[i] = N1[i - 1] + (growth.rate * N1[i - 1] * (220 - (N1[i - 1] - a12 * N2[i - 1]) / 220))
+    N2[i] = N2[i - 1] + (growth.rate * N2[i - 1] * (200 - (N2[i - 1] - a21 * N2[i - 1]) / 200))
+    
+  }
+  
+  # Set an appropriate y-axis limit range
+  ylim_range <- c(0, 250)  # Adjust based on your data
+  
+  
+  if (plot_N1) {
+    plot(generation, N1, xlim=c(0,30), ylim=c(0,250), type = 'b', 
+         main = paste("Rate =", growth.rate, "- N1"), xlab = "Generation", ylab = "N1")
+  }
+  
+  if (plot_N2) {
+    plot(generation, N2, xlim=c(0,30), ylim=c(0,250), type = 'b', 
+         main = paste("Rate =", growth.rate, "- N2"), xlab = "Generation", ylab = "N2")
+    lines(generation, N2, col = "red")  # 使用红色表示 N2
+  }
+}
+
+![N2 GIF](URL_of_N2.gif)
+# 生成 N1 和 N2 的 GIF
+saveGIF({
+  for (i in seq(0.1, 0.5, by = 0.01)){
+    growhw(i, plot_N1 = TRUE)  # 生成 N1 的 GIF
+  }
+}, movie.name = "N1.gif")
+
+saveGIF({
+  for (i in seq(0.1, 0.5, by = 0.01)){
+    growhw(i, plot_N2 = TRUE)  # 生成 N2 的 GIF
+  }
+}, movie.name = "N2.gif")
+
+# 
+saveGIF({
+  for (i in seq(0.1, 0.5, by = 0.01)){
+    growhw(i, plot_N1 = TRUE, plot_N2 = TRUE)
+  }
+}, movie.name = "N1_and_N2.gif")
+
