@@ -4,10 +4,15 @@ author: "rpp"
 date: "2023-10-25"
 output: html_document
 ---
+# R setup
 
 ```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
+```
 
+# Code Lotka-Volterra
+
+```{r setup}
 library(animation)
 library(ggplot2)
 library (gganimate)
@@ -47,7 +52,9 @@ growhw <- function(growth.rateN1,growth.rateN2, plot_N1 = FALSE, plot_N2 = FALSE
     lines(generation, N2, col = "red") 
   }
 }
+```
 
+<<<<<<< HEAD
 
 #plot Species 1 alone, but the population didn't reach saturation
 growhw(0.003,0, plot_N1 = TRUE)
@@ -64,6 +71,12 @@ text(8,140,"Both Species competing")
 
 
 
+=======
+# Plot
+
+```{r plots}
+# 生成 N1 和 N2 的 GIF
+>>>>>>> fede7d9f76d024e1f6bdc8ac6213908c2ecb0e7b
 saveGIF({
   for (i in seq(0.01, 0.5, by = 0.01)){
     growhw(i,0, plot_N1 = TRUE)  # 生成 N1 的 GIF
@@ -82,4 +95,8 @@ saveGIF({
     growhw(i,i, plot_N1 = TRUE, plot_N2 = TRUE)
   }
 }, movie.name = "N1_and_N2.gif")
+
+```
+
+![N2 GIF](URL_of_N2.gif)
 
