@@ -4,10 +4,15 @@ author: "rpp"
 date: "2023-10-25"
 output: html_document
 ---
+# R setup
 
 ```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
+```
 
+# Code Lotka-Volterra
+
+```{r setup}
 library(animation)
 library(ggplot2)
 library (gganimate)
@@ -47,8 +52,11 @@ growhw <- function(growth.rate, plot_N1 = FALSE, plot_N2 = FALSE) {
     lines(generation, N2, col = "red")  # 使用红色表示 N2
   }
 }
+```
 
-![N2 GIF](URL_of_N2.gif)
+# Plot
+
+```{r plots}
 # 生成 N1 和 N2 的 GIF
 saveGIF({
   for (i in seq(0.1, 0.5, by = 0.01)){
@@ -68,4 +76,8 @@ saveGIF({
     growhw(i, plot_N1 = TRUE, plot_N2 = TRUE)
   }
 }, movie.name = "N1_and_N2.gif")
+
+```
+
+![N2 GIF](URL_of_N2.gif)
 
