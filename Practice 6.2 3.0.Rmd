@@ -56,3 +56,23 @@ text(4,150,"Species 2 alone")
 #plot Both Species competing, but the plot only show one line at a time
 growhw(1,1, plot_N1 = TRUE,plot_N2 = TRUE)
 text(8,150,"Both Species competing")
+
+saveGIF({
+  for (i in seq(0.1, 0.5, by = 2)){
+    growhw(i,0, plot_N1 = TRUE)  # 生成 N1 的 GIF
+  }
+}, movie.name = "N1.gif")
+
+saveGIF({
+  for (i in seq(0.1, 0.5, by = 2)){
+    growhw(0,i, plot_N2 = TRUE)  # 生成 N2 的 GIF
+  }
+}, movie.name = "N2.gif")
+
+#two lines didn't show at the same time 
+saveGIF({
+  for (i in seq(0.1, 0.5, by = 2)){
+    growhw(i,i, plot_N1 = TRUE, plot_N2 = TRUE)
+  }
+}, movie.name = "N1_and_N2.gif")
+
