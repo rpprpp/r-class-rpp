@@ -20,8 +20,8 @@ growhw <- function(growth.rateN1, growth.rateN2, plot_N1 = FALSE, plot_N2 = FALS
   N2[1] <- 1
   K1 <- 150
   K2 <- 180
-  a12 <- 1.5
-  a21 <- 1.5
+  a12 <- 2
+  a21 <- 2
   
   for (i in 2:num_gen) {
     # N[i]  = N[i-1]+ (growth.rate*N[i-1]*((100-N[i-1])/100)){
