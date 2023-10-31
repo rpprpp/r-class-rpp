@@ -1,0 +1,41 @@
+---
+title: "Practice 7.4"
+author: "rpp"
+date: "2023-10-31"
+output: html_document
+---
+
+```{r setup}
+library(ggplot2)
+library (gganimate)
+library (dplyr)
+library (psych)
+
+rairuoho<-read.table("https://www.dipintothereef.com/uploads/3/7/3/5/37359245/rairuoho.txt",header=T, sep="\t", dec='.') 
+
+my.t.test <- function(x, y, var.equal = TRUE) {
+    t_stat <- (mean(x) - mean(y)) / sqrt(var(x) / length(x) + var(y) / length(y))
+    df <- length(x) + length(y) - 2
+    p_value <- 2 * pt(-abs(t_stat), df)
+#showing the result of calculation
+result <- list(
+  t = t_stat,
+  df = df,
+  p.value = p_value,
+  mean_of_x = mean(x),
+  mean_of_y = mean(y),
+  method = "Two Sample t-test (with equal variances)"
+  )}
+
+result <- my.t.test(rairuoho$day7, rairuoho$day8, var.equal = TRUE)
+result
+#p-value < 3.361018e-05
+
+
+t.test (rairuoho$day7, rairuoho$day8, var.equal = TRUE)
+#p-value < 3.361e-05
+
+
+#it seems that function "t.test" can't show p-value under less than 2.2e-16
+#since the results of two different ways didn't show the same value in other calculation
+
