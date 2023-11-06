@@ -7,7 +7,6 @@ output: html_document
 
 ```{r setup}
 library(ggplot2)
-library (gganimate)
 library (dplyr)
 library (psych)
 
@@ -38,4 +37,34 @@ t.test (rairuoho$day7, rairuoho$day8, var.equal = TRUE)
 
 #it seems that function "t.test" can't show p-value under less than 2.2e-16
 #since the results of two different ways didn't show the same value in other calculation
+t.test (rairuoho$day3~rairuoho$treatment, var.equal = TRUE)
+t.test (rairuoho$day4~rairuoho$treatment, var.equal = TRUE)
+t.test (rairuoho$day5~rairuoho$treatment, var.equal = TRUE)
+t.test (rairuoho$day6~rairuoho$treatment, var.equal = TRUE)
+t.test (rairuoho$day7~rairuoho$treatment, var.equal = TRUE)
+t.test (rairuoho$day8~rairuoho$treatment, var.equal = TRUE)
+
+
+result3 <-my.t.test(rairuoho$day3[rairuoho$treatment=='nutrient'], 
+                    rairuoho$day3[rairuoho$treatment=='water'],var.equal = T)
+result3 
+result4 <-my.t.test(rairuoho$day4[rairuoho$treatment=='nutrient'], 
+                    rairuoho$day4[rairuoho$treatment=='water'],var.equal = T)
+result4 
+result5 <-my.t.test(rairuoho$day5[rairuoho$treatment=='nutrient'], 
+                    rairuoho$day5[rairuoho$treatment=='water'],var.equal = T)
+result5 
+result6 <-my.t.test(rairuoho$day6[rairuoho$treatment=='nutrient'], 
+                    rairuoho$day6[rairuoho$treatment=='water'],var.equal = T)
+result6 
+result7 <-my.t.test(rairuoho$day7[rairuoho$treatment=='nutrient'], 
+                    rairuoho$day7[rairuoho$treatment=='water'],var.equal = T)
+result7 
+result8 <-my.t.test(rairuoho$day8[rairuoho$treatment=='nutrient'], 
+                    rairuoho$day8[rairuoho$treatment=='water'],var.equal = T)
+result8 
+
+
+#conclusion
+#there is no significant different between nutrient and water treatment before day7 
 

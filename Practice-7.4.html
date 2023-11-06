@@ -358,7 +358,6 @@ display: none;
 
 
 <pre class="r"><code>library(ggplot2)
-library (gganimate)
 library (dplyr)</code></pre>
 <pre><code>## 
 ## 載入套件：&#39;dplyr&#39;</code></pre>
@@ -428,7 +427,201 @@ t.test (rairuoho$day7, rairuoho$day8, var.equal = TRUE)</code></pre>
 
 
 #it seems that function &quot;t.test&quot; can&#39;t show p-value under less than 2.2e-16
-#since the results of two different ways didn&#39;t show the same value in other calculation</code></pre>
+#since the results of two different ways didn&#39;t show the same value in other calculation
+t.test (rairuoho$day3~rairuoho$treatment, var.equal = TRUE)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  rairuoho$day3 by rairuoho$treatment
+## t = -0.64737, df = 46, p-value = 0.5206
+## alternative hypothesis: true difference in means between group nutrient and group water is not equal to 0
+## 95 percent confidence interval:
+##  -2.225903  1.142570
+## sample estimates:
+## mean in group nutrient    mean in group water 
+##               3.583333               4.125000</code></pre>
+<pre class="r"><code>t.test (rairuoho$day4~rairuoho$treatment, var.equal = TRUE)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  rairuoho$day4 by rairuoho$treatment
+## t = 0.038684, df = 46, p-value = 0.9693
+## alternative hypothesis: true difference in means between group nutrient and group water is not equal to 0
+## 95 percent confidence interval:
+##  -4.252833  4.419500
+## sample estimates:
+## mean in group nutrient    mean in group water 
+##               19.12500               19.04167</code></pre>
+<pre class="r"><code>t.test (rairuoho$day5~rairuoho$treatment, var.equal = TRUE)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  rairuoho$day5 by rairuoho$treatment
+## t = 0.44988, df = 46, p-value = 0.6549
+## alternative hypothesis: true difference in means between group nutrient and group water is not equal to 0
+## 95 percent confidence interval:
+##  -6.514234 10.264234
+## sample estimates:
+## mean in group nutrient    mean in group water 
+##               50.04167               48.16667</code></pre>
+<pre class="r"><code>t.test (rairuoho$day6~rairuoho$treatment, var.equal = TRUE)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  rairuoho$day6 by rairuoho$treatment
+## t = 1.2043, df = 46, p-value = 0.2346
+## alternative hypothesis: true difference in means between group nutrient and group water is not equal to 0
+## 95 percent confidence interval:
+##  -3.189083 12.689083
+## sample estimates:
+## mean in group nutrient    mean in group water 
+##               79.45833               74.70833</code></pre>
+<pre class="r"><code>t.test (rairuoho$day7~rairuoho$treatment, var.equal = TRUE)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  rairuoho$day7 by rairuoho$treatment
+## t = 2.7786, df = 46, p-value = 0.007878
+## alternative hypothesis: true difference in means between group nutrient and group water is not equal to 0
+## 95 percent confidence interval:
+##   3.111675 19.471659
+## sample estimates:
+## mean in group nutrient    mean in group water 
+##               99.50000               88.20833</code></pre>
+<pre class="r"><code>t.test (rairuoho$day8~rairuoho$treatment, var.equal = TRUE)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  rairuoho$day8 by rairuoho$treatment
+## t = 4.2038, df = 46, p-value = 0.0001197
+## alternative hypothesis: true difference in means between group nutrient and group water is not equal to 0
+## 95 percent confidence interval:
+##   8.316973 23.599693
+## sample estimates:
+## mean in group nutrient    mean in group water 
+##               115.3333                99.3750</code></pre>
+<pre class="r"><code>result3 &lt;-my.t.test(rairuoho$day3[rairuoho$treatment==&#39;nutrient&#39;], 
+                    rairuoho$day3[rairuoho$treatment==&#39;water&#39;],var.equal = T)
+result3 </code></pre>
+<pre><code>## $t
+## [1] -0.6473666
+## 
+## $df
+## [1] 46
+## 
+## $p.value
+## [1] 0.5206125
+## 
+## $mean_of_x
+## [1] 3.583333
+## 
+## $mean_of_y
+## [1] 4.125
+## 
+## $method
+## [1] &quot;Two Sample t-test (with equal variances)&quot;</code></pre>
+<pre class="r"><code>result4 &lt;-my.t.test(rairuoho$day4[rairuoho$treatment==&#39;nutrient&#39;], 
+                    rairuoho$day4[rairuoho$treatment==&#39;water&#39;],var.equal = T)
+result4 </code></pre>
+<pre><code>## $t
+## [1] 0.03868424
+## 
+## $df
+## [1] 46
+## 
+## $p.value
+## [1] 0.9693095
+## 
+## $mean_of_x
+## [1] 19.125
+## 
+## $mean_of_y
+## [1] 19.04167
+## 
+## $method
+## [1] &quot;Two Sample t-test (with equal variances)&quot;</code></pre>
+<pre class="r"><code>result5 &lt;-my.t.test(rairuoho$day5[rairuoho$treatment==&#39;nutrient&#39;], 
+                    rairuoho$day5[rairuoho$treatment==&#39;water&#39;],var.equal = T)
+result5 </code></pre>
+<pre><code>## $t
+## [1] 0.4498836
+## 
+## $df
+## [1] 46
+## 
+## $p.value
+## [1] 0.6549073
+## 
+## $mean_of_x
+## [1] 50.04167
+## 
+## $mean_of_y
+## [1] 48.16667
+## 
+## $method
+## [1] &quot;Two Sample t-test (with equal variances)&quot;</code></pre>
+<pre class="r"><code>result6 &lt;-my.t.test(rairuoho$day6[rairuoho$treatment==&#39;nutrient&#39;], 
+                    rairuoho$day6[rairuoho$treatment==&#39;water&#39;],var.equal = T)
+result6 </code></pre>
+<pre><code>## $t
+## [1] 1.204327
+## 
+## $df
+## [1] 46
+## 
+## $p.value
+## [1] 0.2346234
+## 
+## $mean_of_x
+## [1] 79.45833
+## 
+## $mean_of_y
+## [1] 74.70833
+## 
+## $method
+## [1] &quot;Two Sample t-test (with equal variances)&quot;</code></pre>
+<pre class="r"><code>result7 &lt;-my.t.test(rairuoho$day7[rairuoho$treatment==&#39;nutrient&#39;], 
+                    rairuoho$day7[rairuoho$treatment==&#39;water&#39;],var.equal = T)
+result7 </code></pre>
+<pre><code>## $t
+## [1] 2.778603
+## 
+## $df
+## [1] 46
+## 
+## $p.value
+## [1] 0.007877937
+## 
+## $mean_of_x
+## [1] 99.5
+## 
+## $mean_of_y
+## [1] 88.20833
+## 
+## $method
+## [1] &quot;Two Sample t-test (with equal variances)&quot;</code></pre>
+<pre class="r"><code>result8 &lt;-my.t.test(rairuoho$day8[rairuoho$treatment==&#39;nutrient&#39;], 
+                    rairuoho$day8[rairuoho$treatment==&#39;water&#39;],var.equal = T)
+result8 </code></pre>
+<pre><code>## $t
+## [1] 4.203762
+## 
+## $df
+## [1] 46
+## 
+## $p.value
+## [1] 0.0001197116
+## 
+## $mean_of_x
+## [1] 115.3333
+## 
+## $mean_of_y
+## [1] 99.375
+## 
+## $method
+## [1] &quot;Two Sample t-test (with equal variances)&quot;</code></pre>
+<pre class="r"><code>#conclusion
+#there is no significant different between nutrient and water treatment before day7 </code></pre>
 
 
 
