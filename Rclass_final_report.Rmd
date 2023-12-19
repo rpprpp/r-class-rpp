@@ -1,0 +1,196 @@
+---
+title: "Assessing the dynamics of invasive pest *Quadrastichus erythrinae* and its parasitoids across multiple landforms"
+author: "Chia-Chien Hung,  Bo-Lei Yu"
+date: "2023-12"
+output: html_document
+---
+
+
+
+## Introduction
+- *Quadrastichus erythrinae* Kim, also known as the Erythrina gall wasp (EGW), is an invasive pest that induces galls on leaves, young stems, twigs, and petioles of coral trees (Erythrina, Fabaceae) (Kim et al., 2004).
+
+- This invasive species was first discovered in small islands located along the eastern coast of Africa, such as Reunion in 2000. To date, its distribution has expanded from Africa to the Asia-Pacific region and subsequently to Central and South America (review in Lin et al. 2021b).
+
+- Trunk injection with imidacloprid is effective to control the infestation by EGW (Xu et al. 2009; Wang et al. 2011). However, integrated pest management (IPM) emphasize the use of multiple pests control methods to reduce the use of pesticides (Ehler, 2006).Furthermore, low genetic variation of EGW may have been through bottleneck effect before invading non-native regions, which makes them possible have the potential for more rapid evolution on pesticides resistance (Rubinoff et al. 2010; Tung et al. 2009; Lin et al. 2021a).
+
+- Adopting native natural enemies, is a more eco-friendly and sustablable management strategy(Ramanagouda and Vastrad 2015). Research on the natural enemies of the EGW suggests that *Aprostocetus* sp. and *Eupelmus* sp. have higher potential as biocontrol agents due to their significant populations and widespread distribution across nearly all study sites (Hung, 2023). 
+
+- Past studies usually shows that invasive species had greater possibilities of invasion in urban or human disturbed areas(Buczkowski & Richmond, 2012; Lin et al. 2022).
+
+- A habitat with less human disturbance and destruction may maintain a relatively complete food web, which can prevent the invasion of introduce species because of a higher richness in predator and parasitoid species, and also the niche of invasive species can be already occupied by native species. 
+
+- In this report, we use habitat composition and monthly EGW, as long as parasitoid wasps collection data of 13 smaple sites in central Taiwan, and hypothesis that EGW can have a higher abundance in habitats with higher buildings and transportation facilities percentage(urban areas) because of a weaker food web might have a higher possibilities for a massive invasion of introduced species. Additionally, to understand  the correlation between land use factors and the two parasitoid wasp species that may be use as biological control agent against EGW(Hung 2023).
+
+## Materials and Method
+
+- Study site
+
+A total of 13 localities in central Taiwan were selected in this study (Fig. 1).  Surveillance of the parasitoid wasp was conducted on a monthly basis from October 2021 to September 2022.
+
+- Sample collection and coral tree assessment
+
+Three 10-15cm infestation branches from each locality were sampled using long reach pruning shears. The collected branches from the same locality were placed in a 32.5 cm3 cube net chamber in the laboratory. The branches containing galls were kept at room temperature until the wasp emerged from the galls. The parasitoids were collected and kept in 95% alcohol in a -20°C refrigerator until identification.
+
+-  Land use categorization 
+
+The habitat composition within a 1-km radius of the sampling site was assessed using the National Land Use Investigation Maps (Fig. 1) (National Land Use Investigation, 2015). The land use categories included agricultural land, forested areas, buildings, transportation facilities, water facilities, and others. To assess the relationship between parasitoid wasp diversity and the selected habitat. The number of coral trees and the habitat composition (in the proportion of land uses) in the area were measured.
+
+
+```{r setup,  message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library("vegan")
+library("ggplot2")
+library("ggrepel")
+library("export")
+library("tidyr")
+library("dplyr")
+library("reshape2")
+library("stringr")
+library("leaflet")
+
+#read in the dataset
+spp<-read.csv("D:/R Studio for CSV/spp.lim..csv")
+site<-read.csv("D:/R Studio for CSV/site.csv")
+
+#arrange the data frame for further analysis and plotting  
+site1 <- site[, -c(7, 8 )] 
+  
+new_row_names <- c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M")
+rownames(site1) <-new_row_names
+  
+site1$ID <- row.names(site1)
+  
+long_data <- melt(site1,id.vars = "ID")
+
+#Sample site mapping
+data <- data.frame(
+  Location = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"),
+  Latitude = c(24.040458, 24.369933, 24.150738, 23.762540, 24.279333, 24.121519, 24.649206, 24.555736, 24.116560, 24.267742, 24.066846, 23.756260, 23.964245),
+  Longitude = c(120.699274, 120.660163, 120.648124, 120.498632, 120.571831, 120.661225, 120.793039, 120.834181, 120.677106, 120.562348, 120.715228, 120.498632, 120.347061))
+
+map <- leaflet() %>%
+  addTiles() %>%  
+  addMarkers(data = data, ~Longitude, ~Latitude, 
+             popup = paste("Location: ", data$Location))  
+
+map
+
+#barplot of landform data of 13 sample sites
+habit.barplot <-ggplot(long_data,aes(x=ID,y=value,fill= variable)) + 
+    geom_bar(stat="identity",position="stack")+
+    labs(x = "sites\nFigure 1. Land use composition of sampling sites within 1-kilometer radius", y = "landform percentage")+
+    labs(fill = "landform variables")+
+    scale_fill_manual(values=c("darkgoldenrod3", "forestgreen", "gray35","gray46", "dodgerblue3","coral"))
+  
+habit.barplot
+
+#test for Normal distribution
+shapiro.test(spp$EGW)
+  
+total_values <- site$buildings + site$transportation.facilities
+shapiro.test(total_values)
+  
+#create a data frame for linear regression
+urban_total <- data.frame(buildings = site$buildings, 
+                            transportation.facilities = site$transportation.facilities,
+                            total_values = site$buildings + site$transportation.facilities,
+                            spp$EGW)
+  
+#conducting linear regression and visualization
+urban.lm<-ggplot(data = urban_total, aes(total_values,spp.EGW ))  +geom_point(shape = 16, size = 2) +geom_smooth(method = "lm") +labs(x = "urban percentage\nFigure 2. linear regression of EGW abundance and the percentage of urban habitats", y= "abundance of EGW")
+  
+urban.lm
+
+#showing the information
+lm<-lm(total_values~spp.EGW,data=urban_total)
+summary(lm)
+  
+#RDA analysis
+spp1 <- spp[, -c(3:9 )] 
+site2 <- site[, -c(6, 7, 8 )] 
+site2.st<-decostand(site2,'stan')
+spp.hell<-decostand(spp1,'hellinger')
+  
+rda1<-rda(spp.hell~.,site2.st)
+anova(rda1)
+
+#prepare for visualizing
+vare_spp_sco <- scores(rda1, display = "species")
+vare_sam_sco <- scores(rda1, display = "sites")
+vare_env_sco <- scores(rda1, display = "bp")
+vare_spp_tbl <- as_tibble(vare_spp_sco)
+vare_sam_tbl <- as_tibble(vare_sam_sco)
+vare_env_tbl <- as_tibble(vare_env_sco)
+vare_spp_tbl <- mutate(vare_spp_tbl, vgntxt=rownames(vare_spp_sco),
+                         ccatype = "species")
+vare_sam_tbl <- mutate(vare_sam_tbl, vgntxt=rownames(vare_sam_sco),
+                         ccatype = "sites")
+vare_env_tbl <- mutate(vare_env_tbl, vgntxt=rownames(vare_env_sco),
+                         ccatype = "bp")
+  
+rescaled <- vare_env_tbl %>% 
+    select(RDA1, RDA2) %>%
+    as.matrix() * 1
+vare_tbl <- select(vare_env_tbl, vgntxt, ccatype) %>%
+    bind_cols(as_tibble(rescaled)) %>%
+    bind_rows(vare_spp_tbl)
+
+#visualization
+RDA<- ggplot() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray6") + 
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray6") +
+  geom_text_repel(aes(x = RDA1, y = RDA2, label = vgntxt), data = filter(vare_tbl, ccatype == "bp"), size = 3.5,color="royalblue3",force=10) +
+  geom_text_repel(aes(x = RDA1, y = RDA2, label = vgntxt), data = filter(vare_tbl, ccatype == "species"), size = 3,color="tomato3",box.padding = 1) +
+  scale_x_continuous(limits = c(-1, 1))+
+  scale_y_continuous(limits = c(-1, 1))+
+  geom_point(aes(x=RDA1, y=RDA2), data=filter(vare_tbl, ccatype=="species"), color="tomato3")  +
+  geom_segment(aes(x=0, y=0, xend=RDA1, yend=RDA2), arrow=arrow(type = "closed",length = unit(0.1,"cm")),
+                data=filter(vare_tbl, ccatype=="bp"), color="royalblue3", size=1) +
+  annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, fill = NA, color = "black",size = 1) +  
+  theme_classic() +
+  labs(x = "Figure 3.Redundancy analysis of EGW and its dominant parasitoids wasps.\n Ap: Aprostocetus sp., Eu: Eupelmus sp.", y= "")
+
+
+RDA
+```
+
+
+## Result
+- The relationship between urban factors and *Quadrastichus erythrinae*
+
+Based on the linear regression findings(Fig. 2), the correlation between EGW abundance and the percentage of urban area appears notably weak, considering the limited number of predictors in the model (p-value=0.778, Adjusted R-squared= -0.08269). Also, the results of Redundancy Analysis(Fig. 3) indicate that the point of EGW is very close to the coordinate origin, revealing little correlation between EGW and all the landform factors used in this report.
+
+- Habitat composition(landform) and parasitoid wasp
+
+The data collected from the two most prevalent parasitoid species was also analyzed through Redundancy Analysis to explore potential correlations between environmental factors and these wasp species(Fig. 3), which are considered potential as biocontrol agents. The findings suggest that *Aprostocetus* sp. demonstrates some association with urban elements such as the proportion of buildings and transportation infrastructure. Similarly, *Eupelmus* sp. displays a correlation with urban factors, albeit marginally lower than the former species.
+
+## Dicussion
+- The correlation between land use factors and *Quadrastichus erythrinae*
+
+In consideration of the results of linear regression and Redundancy Analysis, the abundance of EGW shows very little correlation with the percentage of urban area. These findings reject our hypothesis that urban areas might have a higher likelihood of massive invasion by introduced species. This situation could be attributed to the relatively limited plant diversity and specificity found in secondary and plantation habitats (Yeh et al. 2015). These environments may not provide suitable conditions for certain taxa or establish a robust food web that remains unbreakable when species invasion events occur. However, another possible explanation is that the niche of the EGW hasn't been occupied by native species, to date, we've never found any other gall inducing insects on coral trees in Taiwan. As a result, the introduced species can easily thrive in a new environment. Additionally, local factors such as temperature, precipitation, moisture, and canopy cover, which may play a more significant role than landscape factors in these systems (Fraser et al., 2007; Romo and Tylianakis, 2013; Liu et al., 2019).
+
+- *Quadrastichus erythrinae* and its parasitoid wasps
+
+The collection data of the two most abundant parasitoid species was also used in the Redundancy Analysis. Base on the result of RDA, we can infer that these two highly abundant parasitoid species might be more suitable in urban environments compared to other habitats. In conclusion of the analysis conducted in this report, it was found that the Erythrina gall wasp (EGW) exhibited very low correlation with urban factors, including the percentage of buildings and transportation facilities. However, the two parasitoid species showed some correlation with urban factors, suggesting a better tolerance to the challenges of urban jungles. This could also explain their higher abundance compared to other wasp species, which make them more suitable as biological control agent against *Quadrastichus erythrinae*.
+Future studies should concentrate on local factors to gain a deeper understanding of the ecology of introduced species and potentially develop more effective methods to combat invasive species.
+
+## References
+- Buczkowski G, Richmond DS. 2012. The Effect of Urbanization on Ant Abundance and Diversity: A Temporal Examination of Factors Affecting Biodiversity. PLoS ONE 7(8): e41729.
+- Ehler LE. 2006. Integrated pest management (IPM): definition, historical development and implementation, and the other IPM. Pest management science 62: 787-789.
+- Fraser SE, Dytham C, Mayhew PJ. 2007. Determinants of parasitoid abundance and diversity in woodland habitats. Journal of applied ecology 44: 352-361.
+- Kim IK, Delvare G, La Salle J. 2004. A new species of Quadrastichus (Hymenoptera: Eulophidae): a gall-inducing pest on Erythrina (Fabaceae). Journal of Hymenoptera Research 13: 243-249.
+- Lin CH, Liu YH, Huang, RN, Lin CC, Liu H. K. H., & Wen TH. 2022. Modeling geographical invasions of Solenopsis invicta influenced by land-use patterns. Scientific Reports, 12(1), 11733.
+- Lin SF, Tung GS, Yang MM. 2021a. Out of Africa: Origin of the erythrina gall wasp Quadrastichus erythrinae (Hymenoptera: Chalcidoidea: Eulophidae). Formosan Entomologist 41: 26-36.
+- Lin SF, Tung GS, Yang MM. 2021b. The erythrina gall wasp Quadrastichus erythrinae (Insecta: Hymenoptera: Eulophidae): invasion history, ecology, Infestation and management. Forests 12: 948.
+- Liu KL, Peng MH, Hung YC, Neoh KB. 2019. Effects of park size, peri-urban forest spillover, and environmental filtering on diversity, structure, and morphology of ant assemblages in urban park. Urban Ecosystems 22: 643-656.
+- Ramanagouda S, Vastrad A. 2015. Biological control of eucalyptus gall wasp, Leptocybe invasa Fisher & La Salle (Hymenoptera: Eulophidae) by its native parasitoids. Entomon 40: 85-96.
+Romo CM, Tylianakis JM. 2013. Elevated temperature and drought interact to reduce parasitoid effectiveness in suppressing hosts. PloS one 8: e58136.
+- Rubinoff D, Holland BS, Shibata A, Messing RH, Wright MG. 2010. Rapid invasion despite lack of genetic variation in the Erythrina gall wasp (Quadrastichus erythrinae Kim). Pacific Science 64: 23-31.
+- Wang TS, Tung GS, Yang EC, Yang MM. 2011. A preliminary study of controlling Quadrastichus erythrinae kim on heritage coral trees with trunk injection. Formosan Entomologist 31: 281-286. Chinese
+- Tung GS, Wu LW, Yang YS, Hsu CC, Yang MM. 2009. Genetic differentiation of the eulophid wasp Quadrastichus erythrinae Kim (Hymenoptera: Eulophidae) from various Erythrina hosts based on mitochondrial and nuclear genes. Formosan Entomol 28: 305-313.
+- Xu T, Jacobsen CM, Hara AH, Li J, Li QX. 2009. Efficacy of systemic insecticides on the gall wasp Quadrastichus erythrinae in wiliwili trees (Erythrina spp.). Pest Management Science: formerly Pesticide Science 65: 163-169.
+- Yeh WB, Li HY, Tsai CL, Chan YP. 2015. Insect composition of the canopy layer from the native and plantation forests in Xuejian Area. Formosan Entomologist 35: 165-183. Chinese
+
+
